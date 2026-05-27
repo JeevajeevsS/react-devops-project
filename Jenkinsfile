@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         DOCKER_HUB_REPO = 'jeevas12/react-app'
+        APP_SERVER = '65.0.129.131'
     }
 
     stages {
