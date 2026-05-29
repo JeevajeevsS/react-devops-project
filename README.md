@@ -1,70 +1,256 @@
-# Getting Started with Create React App
+# 🚀 React DevOps CI/CD Project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project demonstrates a complete end-to-end CI/CD pipeline using:
 
-## Available Scripts
+- React.js
+- Docker
+- Docker Hub
+- Jenkins
+- GitHub Webhooks
+- AWS EC2
 
-In the project directory, you can run:
+The application is containerized using Docker and automatically deployed to AWS EC2 using Jenkins pipelines.
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+# 📌 Project Architecture
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Developer Pushes Code → GitHub → Jenkins Pipeline → Docker Build → Docker Hub → AWS EC2 Deployment
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+# 🛠 Technologies Used
 
-### `npm run build`
+| Technology | Purpose |
+|------------|---------|
+| React.js | Frontend Application |
+| Docker | Containerization |
+| Docker Hub | Image Registry |
+| Jenkins | CI/CD Automation |
+| GitHub | Source Code Management |
+| AWS EC2 | Cloud Hosting |
+| Linux | Server Environment |
+| SSH | Remote Deployment |
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+# 📂 Project Structure
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+react-devops-project/
+│
+├── src/
+├── public/
+├── Dockerfile
+├── Jenkinsfile
+├── .dockerignore
+├── package.json
+└── README.md
+```
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+# ⚙️ CI/CD Workflow
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 1️⃣ Developer Pushes Code
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+git push origin main
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
 
-## Learn More
+## 2️⃣ GitHub Webhook Triggers Jenkins
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+GitHub automatically triggers Jenkins pipeline.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## 3️⃣ Jenkins Pipeline Executes
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Pipeline stages:
 
-### Analyzing the Bundle Size
+- Clone Code
+- Build Docker Image
+- Push Docker Image to Docker Hub
+- Deploy to AWS EC2
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+## 4️⃣ Docker Image Build
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Jenkins builds Docker image using:
 
-### Advanced Configuration
+```bash
+docker build -t jeevas12/react-app:latest .
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
 
-### Deployment
+## 5️⃣ Push Image to Docker Hub
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```bash
+docker push jeevas12/react-app:latest
+```
 
-### `npm run build` fails to minify
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 6️⃣ Automatic Deployment to AWS EC2
+
+Jenkins connects to EC2 using SSH and:
+
+- Stops old container
+- Removes old container
+- Pulls latest Docker image
+- Starts updated container
+
+---
+
+# 🐳 Docker Commands Used
+
+## Build Image
+
+```bash
+docker build -t react-app .
+```
+
+## Run Container
+
+```bash
+docker run -d -p 3000:3000 react-app
+```
+
+## View Running Containers
+
+```bash
+docker ps
+```
+
+---
+
+# ☁️ AWS EC2 Setup
+
+Two EC2 instances were used:
+
+| Server | Purpose |
+|--------|---------|
+| Jenkins EC2 | CI/CD Server |
+| App EC2 | Application Hosting |
+
+---
+
+# 🔐 Jenkins Credentials
+
+Docker Hub credentials were securely stored inside Jenkins Credentials Manager.
+
+---
+
+# 🚀 Features
+
+✅ Dockerized React Application  
+✅ Jenkins CI/CD Pipeline  
+✅ GitHub Webhook Automation  
+✅ Automatic Docker Builds  
+✅ Automatic EC2 Deployment  
+✅ Cloud Hosted Application  
+✅ End-to-End Automation
+
+---
+
+# 🧠 Problems Faced & Solutions
+
+## 1. Docker Build Failure
+
+### Issue
+`node_modules` caused Docker build errors.
+
+### Solution
+Added `.dockerignore`
+
+```bash
+node_modules
+```
+
+---
+
+## 2. Jenkins Node Offline
+
+### Issue
+Low disk space caused Jenkins executors to stop.
+
+### Solution
+- Cleaned Docker cache
+- Forced node online using Script Console
+
+---
+
+## 3. Docker Permission Issues
+
+### Issue
+Docker permission denied on EC2.
+
+### Solution
+
+```bash
+sudo usermod -aG docker ec2-user
+```
+
+---
+
+## 4. Jenkins Credential Error
+
+### Issue
+Jenkins could not find Docker credentials.
+
+### Solution
+Matched Jenkins credential ID with Jenkinsfile.
+
+---
+
+## 5. GitHub Webhook Not Triggering
+
+### Issue
+Automatic builds were not starting.
+
+### Solution
+Configured GitHub webhook:
+
+```bash
+http://<JENKINS-IP>:8080/github-webhook/
+```
+
+---
+
+# 📸 Output
+
+The React application is successfully deployed on AWS EC2 with automatic CI/CD deployment.
+
+---
+
+# 📈 Future Improvements
+
+- Add HTTPS using Nginx
+- Add Custom Domain
+- Kubernetes Deployment
+- Monitoring & Logging
+- Terraform Infrastructure
+- Jenkins Shared Libraries
+
+---
+
+# 👨‍💻 Author - Jeeva
+
+Developed as a DevOps learning project to understand:
+
+- CI/CD Pipelines
+- Docker Workflows
+- Cloud Deployment
+- Infrastructure Automation
+
+---
+
+# ⭐ Conclusion
+
+This project demonstrates a fully automated CI/CD pipeline using Jenkins, Docker, GitHub, and AWS EC2.
+
+Any code pushed to GitHub is automatically built, containerized, and deployed to a live AWS server.
